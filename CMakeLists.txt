@@ -43,7 +43,7 @@ meso_apply_target_settings(Lapis)
 
 # Set the public lapis header locations
 set(LAPIS_include_dirs "${CMAKE_CURRENT_LIST_DIR}/Include" CACHE PATH "Path to Lapis headers")
-target_include_directories(Lapis PUBLIC ${SOLOMON_include_dirs})
+target_include_directories(Lapis PRIVATE ${SOLOMON_include_dirs})
 
 # Add the rest of the Lapis source files
 add_subdirectory(Source)
