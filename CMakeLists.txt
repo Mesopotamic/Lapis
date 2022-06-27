@@ -50,6 +50,9 @@ add_subdirectory(Source)
 
 # =================================================================
 # Add the Lapis examples
-
+if(${MESO_BUILD_EXAMPLES})
+    message(STATUS "Adding Lapis examples")
+    add_subdirectory(Examples)
+endif()
 # =================================================================
 meso_sort_target(Lapis)
