@@ -28,7 +28,7 @@ else()
 endif()
 
 # Stop the Lapis project from getting added multiple times
-if(TARGET Lapis)
+if(TARGET lapis)
     return()
 endif()
 
@@ -38,12 +38,12 @@ endif()
 add_subdirectory(${MESO_SOLOMON} solomon)
 
 # Add the lapis library and add it to the Meso project group
-add_library(Lapis "Include/lapis/lapis.h" "Source/lapis.c")
-meso_apply_target_settings(Lapis)
+add_library(lapis "Include/lapis/lapis.h" "Source/lapis.c")
+meso_apply_target_settings(lapis)
 
 # Set the public lapis header locations
 set(LAPIS_include_dirs "${CMAKE_CURRENT_LIST_DIR}/Include" CACHE PATH "Path to Lapis headers")
-target_include_directories(Lapis PRIVATE ${SOLOMON_include_dirs})
+target_include_directories(lapis PRIVATE ${SOLOMON_include_dirs})
 
 # Add the rest of the Lapis source files
 add_subdirectory(Source)
@@ -55,4 +55,14 @@ if(${MESO_BUILD_EXAMPLES})
     add_subdirectory(Examples)
 endif()
 # =================================================================
-meso_sort_target(Lapis)
+# Add the Lapis utilities library
+
+add_library(lapis_utils "Include/lapis/lapis_utils.h")
+set_target_properties(lapis_utils PROPERTIES LINKER_LANGUAGE "C")
+meso_apply_target_settings(lapis_utils)
+add_subdirectory(Source/utils)
+
+# =================================================================
+# Sort all of the targets
+meso_sort_target(lapis)
+meso_sort_target(lapis_utils)
