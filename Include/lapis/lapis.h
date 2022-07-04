@@ -1,30 +1,35 @@
 /*************************************************************************************************************
  * Lapis
- * Lapis provides a ~hopefully~ cross platform rendering backend for almost any type of 3D accelerated
- * platform. How do we accomplish this? There are two parts, the online and offline parts.
+ * This library is designed to be a ~totally~ cross-platform graphics solution - by being written from scratch
+ * to C89 standard. We provide different layers of abstracting for multiple different usages, all packed into
+ * lapis header. However you should be able to use each of the parts seperatley
  *
- * Offline :
- * we must optimise the meshes to suit the performance of the backend, the user can specify how much of each
- * resource they want to dedicate to an object, for example in super mario 64, mario takes up half the vertex
- * count in any scene. So users would tag mario with 50% vertex, but much less vram as the level uses a lot
- * more textures, This is how we should make rendering meshes somewhat crossplatform
+ * Most importantly all of the libraries should not use internal dynamic memory allocation so that users can
+ * make their own memory allocators and work immediatley with lapis, Specifically this is most likely to be
+ * the case in game engines targetting consoles which share memory with the GPU.
  *
- * Online :
- * There are a certain number of vertex attributes and others properties that a user might want to request a
- * draw with. For example n64 is only gonna accept vertex pos, uv, and albedo textures.
- * But a wii will also support vertex normals etc.
- * so we inform you which properties a backend supports, from there you can make a draw call by loading in the
- * supported vertex attributes from the processed mesh, that way you don't waste memory, and then any draw
- * calls using ignored properties will be ignored
+ * Lapis components :
+ *   |-  Lapis Core : Provides common code and type declarations for runtime applications
+ *   |     |-  Lapis Window : Provides basic windowing for users using their own backends
+ *   |     |     |- Lapis UI  : Provides UI abstraction like font and button rendering
+ *   |     |     |- Lapis gfx : Provides 2d graphics support
+ *   |     |-  Lapis Alloc  : Provides example allocators for each of the different backends
+ *   |     |                : This is a rare exception as it is allowed to dynamically allocate
+     |     |                : memory because it is aimed at users who don't want to build their
+     |     |                : own allocators or manage all the different allocators for all the
+     |     |                : different platforms
+ *   |
+ *   |-  Lapis Offline : Provides offline tools to make things nicer for the targeted backend
+ *         |-  Lapis Mesh : Provides mesh optimisation for the different backends
  *
- * As with most Meso projects, I will try to avoid internal memory allocs and as the user to perform those for
- * us
  * License   : GPL3
  * Copyright : 2022 Mesopotamic
  * Authours  : Lawrence G
  *************************************************************************************************************/
 #ifndef __LAPIS_MAIN_HEADER_H__
 #define __LAPIS_MAIN_HEADER_H__ (1)
+#include "lapis_core.h"
+
 #include <stdint.h>
 
 /*************************************************************************************************************
@@ -67,20 +72,27 @@ extern const LapisDrawFeatureFlags k_lapis_draw_feature_mask;
  * What:
  *     Lapis types are split into two different parts, the cpu only visible memory and the gpu visible memory.
  *     It is the responsibility of the user to allocate the memory backing these structs. The lapis types are
- *     always typedef'd void pointers, so you can find the size of the structures to allocate
- *     via lapis_TYPENAME_size and lapis_TYPENANE_size_gpu.
+ *     always typedef'd void pointers, you can use lapis_size_cpu(TYPE) to get cpu size and
+ *     lapis_size_align_gpu(TYPE) to get the size and alignment of the gpu data.
  *
  * How:
- *     Allocating a lapis struct will look like this :
- *     LapisContext ctx = {lapis_cpu_alloc(lapis_context_size()), lapis_gpu_alloc(lapis_context_size_gpu())};
+ *     Allocating a lapis struct can look like this if you use the lapis allocators inside lapis utils :
+ *     LapisContext ctx = {
+ *                           lapis_cpu_alloc(lapis_size_cpu(e_lapis_type_context)),
+ *                           lapis_gpu_alloc(lapis_size_align_gpu(e_lapis_type_context))
+ *                        };
+ *
+ *     Or using an even simplier allocator in lapis_utils :
+ *     LapisContext ctx;
+ *     lapis_alloc(&ctx, e_lapis_type_context);
  *
  * Why:
  *     1)  It's very normal for games to roll their own memory allocators, so the library should never use
  *     dynamic memory allocation internally, that way it makes it easier to migrate between default allocators
  *     and your own custom ones.
  *     2)  I want to make lapis a drop in solution, exposing the contents of the structs
- *     means that users that add lapis.h into their projects will have to add a bunch of preproccessors
- *     statements and include paths
+ *     means that users which add lapis.h into their projects will be forced to add a bunch of preproccessors
+ *     statements and include paths. I want users to just be able to use lapis.h as is.
  *
  * Gpu memory allocation on so many platforms :
  *     Lapis is supposed to be a drop in solution which supports a wide spectrum of different platforms, each
@@ -89,17 +101,27 @@ extern const LapisDrawFeatureFlags k_lapis_draw_feature_mask;
  *     library which is called lapis_utils, which will provide an abstraction layer for gpu and cpu
  *     allocations.
  *     Then if the user decides the lapis solution isn't good enough, they can make their own allocators and
- *     then the user only has to replace the function calls
+ *     then the user only has to replace the allocation function calls instead of changing the library
  *************************************************************************************************************/
+
+typedef enum LapisType {
+    e_lapis_type_context,  // The context that holds everything to get started
+} LapisType;
+
+// Represents the information required to represent a gpu memory allocation. We're using size_t as it should
+// be able to hold any size which can be addressed because malloc uses size_t. However, maybe this should
+// change to uintptr_t? But I don't know if this strictly appeals to C90 standard
+typedef struct LapisSizeAlign {
+    size_t cpu_size;
+    size_t gpu_size;
+    uint32_t gpu_align;
+} LapisGpuSizeAlign;
 
 // Represents all the state for the graphics context
 typedef struct LapisContext {
     void* cpu_mem;
     void* gpu_mem;
 } LapisContext;
-
-size_t lapis_context_size();
-size_t lapis_context_size_gpu();
 
 /*************************************************************************************************************
  * LAPIS ERROR CODES
@@ -130,6 +152,15 @@ typedef enum LapisReturnCode {
  * @returns Lapis success code
  */
 LapisReturnCode lapis_connect();
+
+/**
+ * @brief Tells the user how much memory they should allocate for a lapis structure.
+ * @returns Lapis success code.
+ * @param size A pointer to a lapis size align object which will contain the information needed to allocate
+ * for the given structure.
+ * @param type The lapis type to allocate for.
+ */
+LapisReturnCode lapis_get_size(LapisSizeAlign* size, LapisType type);
 
 /**
  * @breif Takes a lapis context which has already had memory allocated for it, and then produces all of the
