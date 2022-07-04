@@ -1,0 +1,1 @@
+CMake helper functions that are only useful for Lapis projects instead of the entire Mesopotamic project
