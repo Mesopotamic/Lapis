@@ -29,6 +29,7 @@
 #ifndef __LAPIS_MAIN_HEADER_H__
 #define __LAPIS_MAIN_HEADER_H__ (1)
 #include "lapis_core.h"
+#include "lapis_ui.h"
 
 #include <stdint.h>
 
@@ -111,11 +112,11 @@ typedef enum LapisType {
 // Represents the information required to represent a gpu memory allocation. We're using size_t as it should
 // be able to hold any size which can be addressed because malloc uses size_t. However, maybe this should
 // change to uintptr_t? But I don't know if this strictly appeals to C90 standard
-typedef struct LapisSizeAlign {
+typedef struct LapisSize {
     size_t cpu_size;
     size_t gpu_size;
     uint32_t gpu_align;
-} LapisGpuSizeAlign;
+} LapisSize;
 
 // Represents all the state for the graphics context
 typedef struct LapisContext {
@@ -160,7 +161,7 @@ LapisReturnCode lapis_connect();
  * for the given structure.
  * @param type The lapis type to allocate for.
  */
-LapisReturnCode lapis_get_size(LapisSizeAlign* size, LapisType type);
+LapisReturnCode lapis_get_size(LapisSize* size, LapisType type);
 
 /**
  * @breif Takes a lapis context which has already had memory allocated for it, and then produces all of the
