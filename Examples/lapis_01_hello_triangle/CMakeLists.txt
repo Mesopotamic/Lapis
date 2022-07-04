@@ -14,5 +14,4 @@ meso_apply_example_target_settings(${EXAMPLE_NAME})
 
 add_subdirectory(../.. lapis)
 target_link_libraries(${EXAMPLE_NAME} PRIVATE lapis)
-target_link_libraries(${EXAMPLE_NAME} PRIVATE lapis_utils)
 target_include_directories(${EXAMPLE_NAME} PRIVATE ${LAPIS_include_dirs})
