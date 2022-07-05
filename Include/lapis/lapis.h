@@ -15,9 +15,9 @@
  *   |     |     |- Lapis gfx : Provides 2d graphics support
  *   |     |-  Lapis Alloc  : Provides example allocators for each of the different backends
  *   |     |                : This is a rare exception as it is allowed to dynamically allocate
-     |     |                : memory because it is aimed at users who don't want to build their
-     |     |                : own allocators or manage all the different allocators for all the
-     |     |                : different platforms
+ *   |     |                : memory because it is aimed at users who don't want to build their
+ *   |     |                : own allocators or manage all the different allocators for all the
+ *   |     |                : different platforms
  *   |
  *   |-  Lapis Offline : Provides offline tools to make things nicer for the targeted backend
  *         |-  Lapis Mesh : Provides mesh optimisation for the different backends
@@ -30,8 +30,6 @@
 #define __LAPIS_MAIN_HEADER_H__ (1)
 #include "lapis_core.h"
 #include "lapis_ui.h"
-
-#include <stdint.h>
 
 /*************************************************************************************************************
  * LAPIS BACKEND FEATURES
@@ -67,62 +65,6 @@ typedef enum LapisDrawFeatureFlags {
 // The extra drawing features that can be applied to individual draw calls based on the backend lapis was
 // built for
 extern const LapisDrawFeatureFlags k_lapis_draw_feature_mask;
-
-/*************************************************************************************************************
- * LAPIS TYPE DEFINITIONS
- * What:
- *     Lapis types are split into two different parts, the cpu only visible memory and the gpu visible memory.
- *     It is the responsibility of the user to allocate the memory backing these structs. The lapis types are
- *     always typedef'd void pointers, you can use lapis_size_cpu(TYPE) to get cpu size and
- *     lapis_size_align_gpu(TYPE) to get the size and alignment of the gpu data.
- *
- * How:
- *     Allocating a lapis struct can look like this if you use the lapis allocators inside lapis utils :
- *     LapisContext ctx = {
- *                           lapis_cpu_alloc(lapis_size_cpu(e_lapis_type_context)),
- *                           lapis_gpu_alloc(lapis_size_align_gpu(e_lapis_type_context))
- *                        };
- *
- *     Or using an even simplier allocator in lapis_utils :
- *     LapisContext ctx;
- *     lapis_alloc(&ctx, e_lapis_type_context);
- *
- * Why:
- *     1)  It's very normal for games to roll their own memory allocators, so the library should never use
- *     dynamic memory allocation internally, that way it makes it easier to migrate between default allocators
- *     and your own custom ones.
- *     2)  I want to make lapis a drop in solution, exposing the contents of the structs
- *     means that users which add lapis.h into their projects will be forced to add a bunch of preproccessors
- *     statements and include paths. I want users to just be able to use lapis.h as is.
- *
- * Gpu memory allocation on so many platforms :
- *     Lapis is supposed to be a drop in solution which supports a wide spectrum of different platforms, each
- *     with their own way to allocate memory the gpu can see. It wouldn't be very drag and drop if lapis
- *     expected users to create their own allocators for every single platform. To this end, we have a helper
- *     library which is called lapis_utils, which will provide an abstraction layer for gpu and cpu
- *     allocations.
- *     Then if the user decides the lapis solution isn't good enough, they can make their own allocators and
- *     then the user only has to replace the allocation function calls instead of changing the library
- *************************************************************************************************************/
-
-typedef enum LapisType {
-    e_lapis_type_context,  // The context that holds everything to get started
-} LapisType;
-
-// Represents the information required to represent a gpu memory allocation. We're using size_t as it should
-// be able to hold any size which can be addressed because malloc uses size_t. However, maybe this should
-// change to uintptr_t? But I don't know if this strictly appeals to C90 standard
-typedef struct LapisSize {
-    size_t cpu_size;
-    size_t gpu_size;
-    uint32_t gpu_align;
-} LapisSize;
-
-// Represents all the state for the graphics context
-typedef struct LapisContext {
-    void* cpu_mem;
-    void* gpu_mem;
-} LapisContext;
 
 /*************************************************************************************************************
  * LAPIS ERROR CODES
