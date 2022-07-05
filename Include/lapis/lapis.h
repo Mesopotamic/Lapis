@@ -12,7 +12,7 @@
  *   |-  Lapis Core : Provides common code and type declarations for runtime applications
  *   |     |-  Lapis Window : Provides basic windowing for users using their own backends
  *   |     |     |- Lapis UI  : Provides UI abstraction like font and button rendering
- *   |     |     |- Lapis gfx : Provides 2d graphics support
+ *   |     |     |- Lapis gfx : Provides graphics support
  *   |     |-  Lapis Alloc  : Provides example allocators for each of the different backends
  *   |     |                : This is a rare exception as it is allowed to dynamically allocate
  *   |     |                : memory because it is aimed at users who don't want to build their
