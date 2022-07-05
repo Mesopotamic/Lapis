@@ -31,49 +31,4 @@
 #include "lapis_core.h"
 #include "lapis_ui.h"
 
-/*************************************************************************************************************
- * LAPIS FUNCTION DECLARATIONS
- * Finally with all the preamble out the way we can get onto the most important stuff, the actual library
- * function calls. In order to make functions quicker to find via intellisense, functions follow a hierachical
- * naming scheme. So they all start with "lapis_" followed by the domain in which work is being done, for
- * example "context_" or "draw", followed by what is being done, and finally followed by any extra qualifiers.
- *************************************************************************************************************/
-
-/**
- * @brief Starts the Lapis connection, should be the first lapis call made. For example it will fetch the
- * framebuffer sizes so that we can calculate how much gpu visible memory is required for the user to allocate
- * for the context
- * @returns Lapis success code
- */
-LapisReturnCode lapis_connect();
-
-/**
- * @brief Tells the user how much memory they should allocate for a lapis structure.
- * @returns Lapis success code.
- * @param size A pointer to a lapis size align object which will contain the information needed to allocate
- * for the given structure.
- * @param type The lapis type to allocate for.
- */
-LapisReturnCode lapis_get_size(LapisSize* size, LapisType type);
-
-/**
- * @breif Takes a lapis context which has already had memory allocated for it, and then produces all of the
- * state needed to be able to start submitting draw calls to the screen. On consoles, width and height are
- * most likely going to be ignored
- * @returns Lapis success code, most likely success.
- * @param context Pointer to the lapis context to be initialised
- * @param width window width
- * @param height window height
- */
-LapisReturnCode lapis_context_init(LapisContext* context, uint32_t width, uint32_t height);
-
-/**
- * @breif Takes a lapis context which has already had memory allocated for it, and then produces all of the
- * state needed to be able to start submitting draw calls to the screen. The window is made full screen on the
- * currently operating window
- * @returns Lapis success code, most likely success.
- * @param context Pointer to the lapis context to be initialised
- */
-LapisReturnCode lapis_context_init_fullscreen(LapisContext* context);
-
 #endif  // !__LAPIS_MAIN_HEADER_H__

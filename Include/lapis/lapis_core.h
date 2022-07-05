@@ -71,4 +71,27 @@ typedef struct LapisContext {
 typedef enum LapisReturnCode {
     e_lapis_return_success,  // Everything went as expected!
 } LapisReturnCode;
+
+/*************************************************************************************************************
+ * LAPIS FUNCTION DECLARATIONS
+ * Finally with all the preamble out the way we can get onto the most important stuff, the actual library
+ * function calls.
+ *************************************************************************************************************/
+
+/**
+ * @brief Starts the Lapis connection, should be the first lapis call made. For example it will fetch the
+ * framebuffer sizes so that we can calculate how much gpu visible memory is required for the user to allocate
+ * for the context
+ * @returns Lapis success code
+ */
+LapisReturnCode lapis_connect();
+
+/**
+ * @brief Tells the user how much memory they should allocate for a lapis structure.
+ * @returns Lapis success code.
+ * @param size A pointer to a lapis size align object which will contain the information needed to allocate
+ * for the given structure.
+ * @param type The lapis type to allocate for.
+ */
+LapisReturnCode lapis_get_size(LapisSize* size, LapisType type);
 #endif
