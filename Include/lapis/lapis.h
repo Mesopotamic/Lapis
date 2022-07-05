@@ -32,20 +32,6 @@
 #include "lapis_ui.h"
 
 /*************************************************************************************************************
- * LAPIS ERROR CODES
- * Most lapis functions are going to want to comunicate with you if they were successful, it's obviously not
- * strictly required that you always check these error codes as a lot of the time they're going to be
- * successful.
- * For example it makes no sense to check every single triangle that you draw is succesful, but maybe if
- * you're having a draw go wrong, you can check the return codes. You're also probably going to want to make
- * sure that you check the return code of the context creation
- *************************************************************************************************************/
-
-typedef enum LapisReturnCode {
-    e_lapis_return_success,  // Everything went as expected!
-} LapisReturnCode;
-
-/*************************************************************************************************************
  * LAPIS FUNCTION DECLARATIONS
  * Finally with all the preamble out the way we can get onto the most important stuff, the actual library
  * function calls. In order to make functions quicker to find via intellisense, functions follow a hierachical

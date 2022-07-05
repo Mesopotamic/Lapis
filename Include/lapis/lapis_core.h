@@ -62,4 +62,13 @@ typedef struct LapisContext {
     void* gpu_mem;
 } LapisContext;
 
+/*************************************************************************************************************
+ * LAPIS ERROR CODES
+ * Most lapis functions are going to want to comunicate with you if they were successful, it's obviously not
+ * strictly required that you always check these error codes as a lot of the time they're going to be
+ * successful.
+ *************************************************************************************************************/
+typedef enum LapisReturnCode {
+    e_lapis_return_success,  // Everything went as expected!
+} LapisReturnCode;
 #endif
