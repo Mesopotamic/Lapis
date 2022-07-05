@@ -28,7 +28,20 @@
  *************************************************************************************************************/
 #ifndef __LAPIS_MAIN_HEADER_H__
 #define __LAPIS_MAIN_HEADER_H__ (1)
+
+// The core library that is included into every other lapis library
 #include "lapis_core.h"
+
+// Defines how lapis controlls the windowing loop and user inputs
+#include "lapis_window.h"
+
+// Sits on top of window to provide graphics
+#include "lapis_gfx.h"
+
+// Sits on top of the graphics library to produce a simplified UI creation
 #include "lapis_ui.h"
+
+// Provides the user with some example cross platform memory allocators
+#include "lapis_alloc.h"
 
 #endif  // !__LAPIS_MAIN_HEADER_H__
