@@ -32,41 +32,6 @@
 #include "lapis_ui.h"
 
 /*************************************************************************************************************
- * LAPIS BACKEND FEATURES
- * Define all of the different features a lapis backend might support, since they are consts, at compile or
- * link time then compilers are most likely going to be able to optimise out the unnecacary stuff on backends
- * which support fewer features, which are also more likely to require higher optimisation
- *************************************************************************************************************/
-
-// Features that tell the user which features the backend supports which effects how the user will want to
-// load meshes. For example if the backend does not support normal maps, then there's no need to load them
-// from the disk, and if you are using a lapis processed mesh, then the mesh won't even have the features not
-// supported by the backend
-typedef enum LapisMeshFeatureFlags {
-    e_lapis_feature_vertex_pos = 0x1 << 0,      // Supports vertex positions, all backends should support this
-    e_lapis_feature_index_buffer = 0x1 << 1,    // Supports subitting geometry along with an index buffer
-    e_lapis_feature_vertex_color = 0x1 << 2,    // Supports colours sent per vertex
-    e_lapis_feature_vertex_norm = 0x1 << 3,     // Supports normals vectors sent per vertex
-    e_lapis_feature_vertex_tangent = 0x1 << 4,  // Supports tangent vectors sent per vertex
-    e_lapis_feature_vertex_tex_uv = 0x1 << 5,   // Supports texture coordinates, needed for any textures
-    e_lapis_feature_texture_albedo = 0x1 << 6,  // Supports albedo textures
-    e_lapis_feature_texture_normal = 0x1 << 7,  // Supports normal map textures
-} LapisMeshFeatureFlags;
-
-// The mesh features supported by the backend lapis was built for
-extern const LapisMeshFeatureFlags k_lapis_mesh_feature_mask;
-
-// Features that tell the user which type of effects can be applied to a draw, it does not effect asset
-// loading, but it's always helpfull to know if your backend has dynamic shadows etc
-typedef enum LapisDrawFeatureFlags {
-    e_lapis_feature_draw_dynamic_shadows = 0x1 << 0,  // Shadows can be caluclated at runtime from lights
-} LapisDrawFeatureFlags;
-
-// The extra drawing features that can be applied to individual draw calls based on the backend lapis was
-// built for
-extern const LapisDrawFeatureFlags k_lapis_draw_feature_mask;
-
-/*************************************************************************************************************
  * LAPIS ERROR CODES
  * Most lapis functions are going to want to comunicate with you if they were successful, it's obviously not
  * strictly required that you always check these error codes as a lot of the time they're going to be
