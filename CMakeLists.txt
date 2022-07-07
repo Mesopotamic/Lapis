@@ -65,10 +65,6 @@ foreach(lapis_lib ${LAPIS_LIBRARIES})
     endif()
 endforeach()
 
-# Append the cmake module path to allow us to add extra useful cmake functions
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_CURRENT_LIST_DIR}/Source/cmake" 
-    CACHE INTERNAL "" FORCE)
-
 # =================================================================
 # Add the Lapis examples
 if(${MESO_BUILD_EXAMPLES})
