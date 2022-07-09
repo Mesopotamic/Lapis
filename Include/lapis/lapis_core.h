@@ -45,6 +45,8 @@
  *************************************************************************************************************/
 typedef enum LapisType {
     e_lapis_type_context,  // The context that holds everything to get started
+    e_lapis_type_window,   // The window
+    e_lapis_type_target,   // Lapis target which can be rendered to
 } LapisType;
 
 // Represents the information required to represent a gpu memory allocation. We're using size_t as it should
@@ -64,6 +66,12 @@ typedef struct LapisStructure {
 
 // Represents all the state for the graphics context
 typedef LapisStructure LapisContext;
+
+// Represents the window
+typedef LapisStructure LapisWindow;
+
+// Represents an area that we can render to. One of these is contained in the window, they can be subdivided
+typedef LapisStructure LapisTarget;
 
 /**
  * Lapis helpers, so lapis can calculate how much space each structure needs and also how to create the struct
