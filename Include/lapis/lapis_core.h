@@ -5,7 +5,7 @@
  *
  * License   : GPL3
  * Copyright : 2022 Mesopotamic
- * Authours  : Lawrence G
+ * Authors   : Lawrence G
  *************************************************************************************************************/
 #ifndef __LAPIS_CORE_EXTERNAL_HEADER_H__
 #define __LAPIS_CORE_EXTERNAL_HEADER_H__ (1)
