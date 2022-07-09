@@ -25,6 +25,7 @@ endif()
 
 # =================================================================
 # Create the Lapis libraries
+add_library(lapis INTERFACE)
 
 # Set the public lapis header locations
 set(LAPIS_include_dirs "${CMAKE_CURRENT_LIST_DIR}/Include" 
@@ -32,7 +33,7 @@ set(LAPIS_include_dirs "${CMAKE_CURRENT_LIST_DIR}/Include"
 
 # Create a list of all of the lapis libraries, link all of the 
 # lapis libs to lapis core library
-set(LAPIS_LIBRARIES lapis_core lapis_window lapis_ui lapis_gfx lapis_alloc lapis)
+set(LAPIS_LIBRARIES lapis_core lapis_window lapis_ui lapis_gfx lapis_alloc)
 foreach(lapis_lib ${LAPIS_LIBRARIES})
     add_library(${lapis_lib} "Include/lapis/${lapis_lib}.h")
     meso_apply_target_settings(${lapis_lib})
@@ -46,9 +47,7 @@ endforeach()
 
 # Link main lapis library to all the sub libraries
 foreach(lapis_lib ${LAPIS_LIBRARIES})
-    if(NOT ${lapis_lib} STREQUAL "lapis")
-        target_link_libraries(lapis PUBLIC ${lapis_lib})
-    endif()
+    target_link_libraries(lapis INTERFACE ${lapis_lib})
 endforeach()
 
 # Create the rest of the dependency chain for the lapis libraries 
