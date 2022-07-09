@@ -56,11 +56,14 @@ typedef struct LapisSize {
     uint32_t gpu_align;
 } LapisSize;
 
-// Represents all the state for the graphics context
-typedef struct LapisContext {
+// Represents all lapis structs as a set of two pointers
+typedef struct LapisStructure {
     void* cpu_mem;
     void* gpu_mem;
-} LapisContext;
+} LapisStructure;
+
+// Represents all the state for the graphics context
+typedef LapisStructure LapisContext;
 
 /*************************************************************************************************************
  * LAPIS ERROR CODES
