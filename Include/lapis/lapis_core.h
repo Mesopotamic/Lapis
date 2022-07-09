@@ -135,5 +135,11 @@ LapisReturnCode lapis_connect();
 /**
  * Lapis struct creation functions
  */
-LapisReturnCode lapis_get_size(LapisSize* size, LapisType type);
+
+/**
+ * @brief Creates the lapis context which has already been allocated
+ * @returns Lapis success code
+ * @param context Pointer to the context to create
+ */
+LapisReturnCode lapis_create_context(LapisContext* context);
 #endif
