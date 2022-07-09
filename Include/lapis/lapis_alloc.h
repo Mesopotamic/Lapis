@@ -7,6 +7,7 @@
  * Authors   : Lawrence G
  *************************************************************************************************************/
 #ifndef __LAPIS_ALLOC_EXTERNAL_HEADER_H__
+#define __LAPIS_ALLOC_EXTERNAL_HEADER_H__ (1)
 #include "lapis_core.h"
 
 /**
