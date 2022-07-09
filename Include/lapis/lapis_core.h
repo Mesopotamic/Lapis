@@ -65,6 +65,21 @@ typedef struct LapisStructure {
 // Represents all the state for the graphics context
 typedef LapisStructure LapisContext;
 
+/**
+ * Lapis helpers, so lapis can calculate how much space each structure needs and also how to create the struct
+ * once it's been allocated
+ */
+
+typedef struct LapisWindowHelper {
+    uint32_t width;
+    uint32_t height;
+} LapisWindowHelper;
+
+typedef struct LapisTargetHelper {
+    uint32_t width;
+    uint32_t height;
+} LapisTargetHelper;
+
 /*************************************************************************************************************
  * LAPIS ERROR CODES
  * Most lapis functions are going to want to comunicate with you if they were successful, it's obviously not
@@ -82,6 +97,26 @@ typedef enum LapisReturnCode {
  *************************************************************************************************************/
 
 /**
+ * @brief Tells the user how much memory they should allocate for a lapis structure.
+ * @returns Lapis success code.
+ * @param size A pointer to a lapis size align object which will contain the information needed to allocate
+ * for the given structure.
+ * @param type The lapis type to allocate for.
+ */
+LapisReturnCode lapis_get_size(LapisSize* size, LapisType type);
+
+/**
+ * @brief Tells the user how much memory they should allocate for a lapis structure when the size of the
+ * structure depends on aditional information for example the size of the screen in pixels
+ * @returns Lapis Success code
+ * @param size a pointer to a lapis size align object which will contin the information needed to allocate for
+ * the given structure
+ * @param type The lapis type to allocate for
+ * @param helper Pointer to a structure containing the information lapis needs to tell the user the size
+ */
+LapisReturnCode lapis_get_size_dynamic(LapisSize* size, LapisType type, void* helper);
+
+/**
  * @brief Starts the Lapis connection, should be the first lapis call made. For example it will fetch the
  * framebuffer sizes so that we can calculate how much gpu visible memory is required for the user to allocate
  * for the context
@@ -90,11 +125,7 @@ typedef enum LapisReturnCode {
 LapisReturnCode lapis_connect();
 
 /**
- * @brief Tells the user how much memory they should allocate for a lapis structure.
- * @returns Lapis success code.
- * @param size A pointer to a lapis size align object which will contain the information needed to allocate
- * for the given structure.
- * @param type The lapis type to allocate for.
+ * Lapis struct creation functions
  */
 LapisReturnCode lapis_get_size(LapisSize* size, LapisType type);
 #endif
