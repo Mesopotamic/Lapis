@@ -15,3 +15,7 @@ meso_apply_example_target_settings(${EXAMPLE_NAME})
 add_subdirectory(../.. lapis)
 target_link_libraries(${EXAMPLE_NAME} PRIVATE lapis)
 target_include_directories(${EXAMPLE_NAME} PRIVATE ${LAPIS_include_dirs})
+
+# Sort the example
+include(meso_sort_project)
+meso_sort_target(${EXAMPLE_NAME})
