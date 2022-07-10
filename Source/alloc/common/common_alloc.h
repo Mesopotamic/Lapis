@@ -1,0 +1,5 @@
+#ifndef __LAPIS_ALLOC_COMMON_INTERNAL_HEADER_H__
+#define __LAPIS_ALLOC_COMMON_INTERNAL_HEADER_H__ (1)
+#include "lapis/lapis_alloc.h"
+
+#endif  // !__LAPIS_ALLOC_COMMON_INTERNAL_HEADER_H__
