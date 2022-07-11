@@ -9,7 +9,6 @@
  *************************************************************************************************************/
 #ifndef __LAPIS_CORE_EXTERNAL_HEADER_H__
 #define __LAPIS_CORE_EXTERNAL_HEADER_H__ (1)
-#include <stdint.h>
 
 /*************************************************************************************************************
  * LAPIS TYPE DEFINITIONS
@@ -43,6 +42,9 @@
  *     means that users which add lapis.h into their projects will be forced to add a bunch of preproccessors
  *     statements and include paths. I want users to just be able to use lapis.h as is.
  *************************************************************************************************************/
+#include <stdint.h>
+#include <stddef.h>
+
 typedef enum LapisType {
     e_lapis_type_context,  // The context that holds everything to get started
     e_lapis_type_window,   // The window
